@@ -22,7 +22,7 @@ export async function POST(request: Request) {
     sameSite: "lax",
     path: "/",
     // Matches the jwt plugin's own expiry (see backend lib/auth.ts).
-    maxAge: 60 * 15,
+    maxAge: 60 * 60 * 24 * 7,
   });
 
   return NextResponse.json({ ok: true });
