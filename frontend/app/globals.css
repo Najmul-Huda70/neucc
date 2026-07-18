@@ -1,0 +1,83 @@
+@import "tailwindcss";
+
+@theme {
+  /* Circuit Teal palette (REQUIREMENTS.md §2) */
+  --color-primary: #0d3b3b;
+  --color-secondary: #14b8a6;
+  --color-accent: #f4a340;
+  --color-neutral-bg: #faf9f6;
+  --color-neutral-text: #4c7e78;
+
+  --color-success: #16a34a;
+  --color-danger: #dc2626;
+  --color-warning: #f4a340;
+
+  /* Typography */
+  --font-logo: var(--font-logo);
+  --font-heading: var(--font-heading);
+  --font-subheading: var(--font-subheading);
+  --font-body: var(--font-body);
+
+  /* Spacing scale (REQUIREMENTS.md §2) */
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 1rem;
+  --spacing-md: 1.5rem;
+  --spacing-lg: 2rem;
+
+  /* Card radius */
+  --radius-card: 12px;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-neutral-bg);
+  color: var(--color-primary);
+  font-family: var(--font-body), system-ui, sans-serif;
+}
+
+h1,
+h2 {
+  font-family: var(--font-heading), serif;
+}
+
+h3,
+h4,
+.card-title {
+  font-family: var(--font-subheading), serif;
+  font-weight: 500;
+}
+
+.font-logo {
+  font-family: var(--font-logo), cursive;
+}
+
+/* Skeleton shimmer for async card grids */
+@keyframes skeleton-shimmer {
+  0% {
+    background-position: -400px 0;
+  }
+  100% {
+    background-position: 400px 0;
+  }
+}
+
+.skeleton {
+  background: linear-gradient(90deg, #e7e3db 25%, #f2efe9 37%, #e7e3db 63%);
+  background-size: 800px 100%;
+  animation: skeleton-shimmer 1.4s ease-in-out infinite;
+  border-radius: var(--radius-card);
+}
+
+/* Consistent focus ring across the app, matches the secondary teal */
+:focus-visible {
+  outline: 2px solid var(--color-secondary);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: var(--color-accent);
+  color: var(--color-primary);
+}
