@@ -103,7 +103,7 @@ function LoginForm() {
           <button
             type="button"
             disabled={loading}
-            onClick={() => void doLogin("demo@neu.ac.bd", "demo12345")}
+            onClick={() => void doLogin("demo.user@neu.ac.bd", "demo.user@neu.ac.bd")}
             className="w-full block rounded-full border border-[var(--color-secondary)] px-5 py-2.5 text-sm font-medium text-[var(--color-secondary)] transition hover:bg-[var(--color-secondary)]/10 disabled:opacity-60 sm:py-3"
           >
             Try demo login

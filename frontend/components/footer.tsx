@@ -12,7 +12,7 @@ export function Footer() {
             <CircuitBoard className="h-6 w-6 text-[var(--color-accent)]" aria-hidden />
             NEUCC
           </Link>
-          <p className="mt-3 max-w-xs text-sm text-[var(--color-neutral-bg)]/70">
+          <p className="mt-3 max-w-xl text-sm text-[var(--color-neutral-bg)]/70">
             Computer Club, Department of CSE, Netrokona University — building programmers,
             one contest at a time.
           </p>
