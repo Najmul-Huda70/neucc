@@ -30,7 +30,8 @@ app.use(
 );
 
 const authLimiter = rateLimit({ windowMs: 15 * 60 * 1000, limit: 20 });
-app.use("/api/auth", authLimiter);
+app.use("/api/auth/sign-in", authLimiter);
+app.use("/api/auth/sign-up", authLimiter);
 
 // Better Auth mounts its own routes — must come before express.json()
 // so it can read the raw body correctly.
