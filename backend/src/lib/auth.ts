@@ -36,7 +36,7 @@ export const auth = betterAuth({
     // proxy.ts can verify locally without calling this server.
     jwt({
       jwt: {
-        expirationTime: "15m",
+         expirationTime: "7d", 
         definePayload: ({ user }) => ({
           sub: user.id,
           role: (user as { role?: string }).role ?? "user",
