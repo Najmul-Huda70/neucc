@@ -140,28 +140,7 @@ rather than a separate nav item.
 - Manage page reuses the protected "Manage items" pattern, restricted to
   Election Commission role (approve/disqualify candidates)
 
-## 5. Seed Content — Events (no placeholders)
-
-1. Regional Programming Contest 2025 — Contest — 15 Oct — ৳300/team
-2. Intra University Programming Contest — Contest — 5 Sep — Free
-3. CSE Fest 2025 — Fest — 20–21 Nov — ৳150
-4. IT Quiz Competition — Contest — 20 Nov — Free
-5. Project Showcasing 2025 — Fest — 21 Nov — Free entry
-6. PC Building & Troubleshooting Workshop — Workshop — 12 Oct — ৳100
-7. Web Development Bootcamp — Workshop — 3 Dec — ৳200
-8. Freshers' Reception 2025 — Social — 25 Aug — Free
-9. Inter-Batch Football Tournament — Sports — 8–10 Nov — ৳400/team
-10. Inter-Batch Cricket Tournament — Sports — 15–17 Nov — ৳300/team
-11. Badminton Championship — Sports — 22 Nov — ৳100
-12. Executive Committee Election 2026 — Election — 23 Jul 2026 — ৳100–৳500 (see §4)
-13. (optional 13th item) Career Guidance Seminar — Seminar — 28 Sep — Free
-
-> Superseded by a later decision in `CHANGELOG.md`: **no seed data** is
-> actually being inserted — empty states show a real message + CTA instead.
-> This list stays here as reference content for when real events get added
-> through the UI.
-
-## 6. Data Models (MongoDB)
+## 5. Data Models (MongoDB)
 
 ### User
 `name, studentId, batch (enum: 1st–4th year), email, passwordHash, role (enum: member | election_commission | admin), createdAt`
@@ -177,7 +156,7 @@ rather than a separate nav item.
 ### Review
 `eventId (ref Event), userId (ref User), rating (1-5), comment, createdAt`
 
-## 7. Non-functional requirements
+## 6. Non-functional requirements
 
 - No placeholder/lorem ipsum content anywhere
 - Consistent card size, radius, spacing across all listings
@@ -187,7 +166,7 @@ rather than a separate nav item.
 - All buttons and links functional (no dead links)
 - Skeleton loading states for async data fetches
 
-## 8. Build order (suggested)
+## 7. Build order (suggested)
 
 1. Next.js + TypeScript scaffold, Tailwind config with design tokens
 2. MongoDB models + connection
