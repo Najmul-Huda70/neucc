@@ -13,6 +13,7 @@ import { contactRouter } from "./routes/contact.js";
 import { newsletterRouter } from "./routes/newsletter.js";
 import { attendeesRouter } from "./routes/attendees.js";
 import { statsRouter } from "./routes/stats.js";
+import { aiRouter } from "./routes/ai.js";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -52,6 +53,7 @@ app.use("/api/contact", contactRouter);
 app.use("/api/newsletter", newsletterRouter);
 app.use("/api/attendees", attendeesRouter);
 app.use("/api/stats", statsRouter);
+app.use("/api/ai", aiRouter);
 
 // 404 fallback
 app.use((_req, res) => {
