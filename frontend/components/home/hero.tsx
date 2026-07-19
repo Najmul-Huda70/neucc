@@ -86,7 +86,7 @@ export function Hero({ events }: { events: EventDoc[] }) {
                   transition={{ duration: 0.4 }}
                 >
                   <div className="relative h-56 w-full">
-                    <Image src={current.imageUrl} alt={current.title} fill className="object-cover" priority />
+                    <Image src={current.imageUrl} alt={current.title} fill sizes="(min-width: 1024px) 50vw, 100vw" className="object-cover" priority loading="eager" />
                   </div>
                   <div className="p-5">
                     <p className="text-xs uppercase tracking-wide text-[var(--color-accent)]">

@@ -4,6 +4,7 @@ import { Navbar } from "@/components/navbar";
 import { ToasterProvider } from "@/components/toaster-provider";
 import "./globals.css";
 import { Footer } from "@/components/footer";
+import { AiChatAssistant } from "@/components/ai-chat-assistant";
 
 export const metadata: Metadata = {
   title: {
@@ -23,6 +24,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <main className="flex-1">{children}</main>
         <Footer/>
         <ToasterProvider />
+        <AiChatAssistant />
       </body>
     </html>
   );

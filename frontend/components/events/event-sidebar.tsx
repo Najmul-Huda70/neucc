@@ -16,10 +16,13 @@ export function EventSidebar({
   initialCount?: number;
 }) {
   const { data: session, isPending: sessionPending } = useSession();
-  const [interested, setInterested] = useState(false);
+  const [interestState, setInterestState] = useState<"unknown" | "yes" | "no">("unknown");
   const [count, setCount] = useState(initialCount);
-  const [checkingMine, setCheckingMine] = useState(false);
   const [isPending, startTransition] = useTransition();
+
+  const interested = interestState === "yes";
+  const checkingMine =
+    Boolean(session && event.category !== "Election") && interestState === "unknown";
 
   // Once we know who's logged in, check whether they've already registered
   // interest, so the button renders correctly after a refresh instead of
@@ -27,16 +30,15 @@ export function EventSidebar({
   useEffect(() => {
     if (!session || event.category === "Election") return;
     let cancelled = false;
-    setCheckingMine(true);
     apiFetch<{ eventIds: string[] }>("/api/attendees/mine")
       .then((data) => {
-        if (!cancelled) setInterested(data.eventIds.includes(event._id));
+        if (!cancelled) {
+          setInterestState(data.eventIds.includes(event._id) ? "yes" : "no");
+        }
       })
       .catch(() => {
         // Non-fatal — button just falls back to "Register interest".
-      })
-      .finally(() => {
-        if (!cancelled) setCheckingMine(false);
+        if (!cancelled) setInterestState("no");
       });
     return () => {
       cancelled = true;
@@ -53,7 +55,7 @@ export function EventSidebar({
       try {
         if (interested) {
           await apiFetch(`/api/attendees/${event._id}`, { method: "DELETE" });
-          setInterested(false);
+          setInterestState("no");
           setCount((c) => Math.max(0, c - 1));
           toast.success("You're off the interest list.");
         } else {
@@ -61,7 +63,7 @@ export function EventSidebar({
             method: "POST",
             body: { eventId: event._id },
           });
-          setInterested(true);
+          setInterestState("yes");
           if (!data?.alreadyRegistered) setCount((c) => c + 1);
           toast.success("You're marked as interested — updates will show closer to the date.");
         }

@@ -68,6 +68,11 @@ export function Navbar() {
             </Link>
           )}
           {session && (
+            <Link href="/ai-generator" className="text-sm font-medium text-[var(--color-primary)] hover:text-[var(--color-secondary)]">
+              AI Generator
+            </Link>
+          )}
+          {session && (
             <Link href="/profile" className="text-sm font-medium text-[var(--color-primary)] hover:text-[var(--color-secondary)]">
               Profile
             </Link>
@@ -136,6 +141,9 @@ export function Navbar() {
             )}
             {session ? (
               <>
+                <Link href="/ai-generator" onClick={() => setOpen(false)} className="text-sm font-medium text-[var(--color-primary)]">
+                  AI Generator
+                </Link>
                 <Link href="/profile" onClick={() => setOpen(false)} className="text-sm font-medium text-[var(--color-primary)]">
                   Profile
                 </Link>

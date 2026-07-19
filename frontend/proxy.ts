@@ -3,7 +3,7 @@ import { SESSION_COOKIE, verifySessionToken } from "@/lib/session";
 
 // Routes that merely require *some* logged-in user (backend uses
 // requireAuth, not requireRole, for these — see backend/src/routes).
-const AUTH_ONLY = ["/election/apply", "/profile"];
+const AUTH_ONLY = ["/election/apply", "/profile", "/ai-generator"];
 // Routes restricted to the admin role (backend uses requireRole("admin")
 // here — events POST/PATCH/DELETE and nomination approve/disqualify).
 // Election Commission is folded into "admin" per CHANGELOG's role simplification.
@@ -52,5 +52,6 @@ export const config = {
     "/election/manage/:path*",
     "/profile/:path*",
     "/admin/:path*",
+    "/ai-generator/:path*",
   ],
 };
