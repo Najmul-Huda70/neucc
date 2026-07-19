@@ -116,22 +116,13 @@ function LoginForm() {
           <div className="h-px flex-1 bg-[var(--color-secondary)]/15" />
         </div>
 
-        <div className="grid gap-3 sm:grid-cols-2">
-          <button
+       <button
             type="button"
             onClick={() => void signInWithGoogle()}
-            className="w-full block rounded-full border border-[var(--color-secondary)]/25 px-2 py-2 text-xs font-medium text-[var(--color-primary)] transition hover:bg-[var(--color-secondary)]/5 sm:py-2.5 sm:text-sm"
+            className="w-full rounded-full border border-[var(--color-secondary)]/25 px-5 py-2.5 text-sm font-medium text-[var(--color-primary)] transition hover:bg-[var(--color-secondary)]/5"
           >
-            Google
+            Continue with Google
           </button>
-          {/* <button
-            type="button"
-            onClick={() => toast("Social login is a decorative placeholder for now.")}
-            className="rounded-full border border-[var(--color-secondary)]/25 px-2 py-2 text-xs font-medium text-[var(--color-primary)] transition hover:bg-[var(--color-secondary)]/5 sm:py-2.5 sm:text-sm"
-          >
-            Facebook
-          </button> */}
-        </div>
 
         <p className="mt-6 text-center text-xs text-[var(--color-neutral-text)] sm:text-sm">
           New to NEUCC?{" "}
