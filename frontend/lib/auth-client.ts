@@ -1,11 +1,22 @@
 import { createAuthClient } from "better-auth/react";
 import { API_URL } from "@/lib/api";
+import { inferAdditionalFields } from "better-auth/client/plugins";
 
 export const authClient = createAuthClient({
-  baseURL: API_URL,
+   baseURL: API_URL,
   fetchOptions: {
     credentials: "include",
   },
+  plugins: [
+    inferAdditionalFields({
+      user: {
+        studentId: { type: "string" },
+        batch: { type: "string" },
+        profileComplete: { type: "boolean" },
+        role: { type: "string" },
+      },
+    }),
+  ],
 });
 
 export const { signIn, signUp, signOut, useSession } = authClient;
@@ -38,4 +49,11 @@ export async function syncFrontendSession(): Promise<void> {
 export async function clearFrontendSession(): Promise<void> {
   await signOut();
   await fetch("/api/session", { method: "DELETE" });
+}
+
+export async function signInWithGoogle(): Promise<void> {
+  await authClient.signIn.social({
+    provider: "google",
+    callbackURL: `${window.location.origin}/auth/callback`,
+  });
 }

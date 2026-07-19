@@ -1,20 +1,16 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { SESSION_COOKIE, verifySessionToken } from "@/lib/session";
 
-// Routes that merely require *some* logged-in user (backend uses
-// requireAuth, not requireRole, for these — see backend/src/routes).
 const AUTH_ONLY = ["/election/apply", "/profile", "/ai-generator"];
-// Routes restricted to the admin role (backend uses requireRole("admin")
-// here — events POST/PATCH/DELETE and nomination approve/disqualify).
-// Election Commission is folded into "admin" per CHANGELOG's role simplification.
 const ADMIN_ONLY = ["/events/add", "/events/manage", "/election/manage", "/admin"];
+
+// NOTUN: ei route-gulor jonno studentId/batch complete thaka lagbe
+const PROFILE_REQUIRED = ["/election/apply"];
 
 function matches(pathname: string, prefixes: string[]) {
   return prefixes.some((p) => pathname === p || pathname.startsWith(`${p}/`));
 }
 
-// /events/:id/edit is admin-only too, but its dynamic `:id` segment doesn't
-// fit the plain-prefix check above.
 const EVENT_EDIT_RE = /^\/events\/[^/]+\/edit(\/.*)?$/;
 
 export default async function proxy(request: NextRequest) {
@@ -38,6 +34,13 @@ export default async function proxy(request: NextRequest) {
     const homeUrl = new URL("/", request.url);
     homeUrl.searchParams.set("denied", "1");
     return NextResponse.redirect(homeUrl);
+  }
+
+  // NOTUN: profile incomplete hole election apply-e jete dibo na
+  if (matches(pathname, PROFILE_REQUIRED) && !session.profileComplete) {
+    const profileUrl = new URL("/profile", request.url);
+    profileUrl.searchParams.set("complete", "1");
+    return NextResponse.redirect(profileUrl);
   }
 
   return NextResponse.next();

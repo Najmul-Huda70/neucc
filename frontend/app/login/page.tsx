@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Mail, Lock, Loader2, LogIn } from "lucide-react";
 import toast from "react-hot-toast";
-import { signIn, syncFrontendSession } from "@/lib/auth-client";
+import { signIn, signInWithGoogle, syncFrontendSession } from "@/lib/auth-client";
 
 export default function LoginPage() {
   return (
@@ -119,18 +119,18 @@ function LoginForm() {
         <div className="grid gap-3 sm:grid-cols-2">
           <button
             type="button"
-            onClick={() => toast("Social login is a decorative placeholder for now.")}
+            onClick={() => void signInWithGoogle()}
             className="w-full block rounded-full border border-[var(--color-secondary)]/25 px-2 py-2 text-xs font-medium text-[var(--color-primary)] transition hover:bg-[var(--color-secondary)]/5 sm:py-2.5 sm:text-sm"
           >
             Google
           </button>
-          <button
+          {/* <button
             type="button"
             onClick={() => toast("Social login is a decorative placeholder for now.")}
             className="rounded-full border border-[var(--color-secondary)]/25 px-2 py-2 text-xs font-medium text-[var(--color-primary)] transition hover:bg-[var(--color-secondary)]/5 sm:py-2.5 sm:text-sm"
           >
             Facebook
-          </button>
+          </button> */}
         </div>
 
         <p className="mt-6 text-center text-xs text-[var(--color-neutral-text)] sm:text-sm">

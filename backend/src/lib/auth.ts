@@ -21,28 +21,37 @@ export const auth = betterAuth({
     enabled: true,
     minPasswordLength: 8,
   },
-
+  socialProviders: {
+    google: {
+      clientId: process.env.GOOGLE_CLIENT_ID as string,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+    },
+  },
   // Extra fields collected at registration, stored on the user document.
   user: {
     additionalFields: {
-      studentId: { type: "string", required: true },
-      batch: { type: "string", required: true },
+      studentId: { type: "string", required: false, defaultValue: "" },
+      batch: { type: "string", required: false, defaultValue: "" },
+      profileComplete: {
+        type: "boolean",
+        required: false,
+        defaultValue: false,
+      },
       role: { type: "string", required: false, defaultValue: "user" },
     },
   },
 
   plugins: [
-    // Issues short-lived JWTs (jose under the hood) that the Next.js
-    // proxy.ts can verify locally without calling this server.
-    jwt({
-      jwt: {
-         expirationTime: "7d", 
-        definePayload: ({ user }) => ({
-          sub: user.id,
-          role: (user as { role?: string }).role ?? "user",
-        }),
-      },
+   jwt({
+  jwt: {
+    expirationTime: "7d",
+    definePayload: ({ user }) => ({
+      sub: user.id,
+      role: (user as { role?: string }).role ?? "user",
+      profileComplete: (user as { profileComplete?: boolean }).profileComplete ?? false,
     }),
+  },
+}),
   ],
 
   advanced: {

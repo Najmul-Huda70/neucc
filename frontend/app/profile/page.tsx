@@ -2,9 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { UserCircle2, Vote, Loader2 } from "lucide-react";
-import { useSession } from "@/lib/auth-client";
+import toast from "react-hot-toast";
+import { useSession, authClient } from "@/lib/auth-client";
 import { apiFetch } from "@/lib/api";
-import type { Nomination } from "@/types";
+import { BATCHES, type Batch, type Nomination } from "@/types";
 
 const STATUS_STYLES: Record<string, string> = {
   pending: "bg-[var(--color-warning)]/15 text-[var(--color-warning)]",
@@ -16,6 +17,11 @@ export default function ProfilePage() {
   const { data: session, isPending } = useSession();
   const [nominations, setNominations] = useState<Nomination[] | null>(null);
 
+  const [editing, setEditing] = useState(false);
+  const [studentId, setStudentId] = useState("");
+  const [batch, setBatch] = useState<Batch>("1st year");
+  const [saving, setSaving] = useState(false);
+
   useEffect(() => {
     if (!session) return;
     apiFetch<Nomination[]>("/api/nominations/mine")
@@ -23,14 +29,75 @@ export default function ProfilePage() {
       .catch(() => setNominations([]));
   }, [session]);
 
+  async function saveProfile() {
+    setSaving(true);
+    try {
+      await authClient.updateUser({ studentId: studentId.trim(), batch, profileComplete: true });
+      toast.success("Profile updated!");
+      setEditing(false);
+      window.location.reload(); // simplest way to refresh session.user everywhere
+    } catch {
+      toast.error("Could not update profile. Try again.");
+    } finally {
+      setSaving(false);
+    }
+  }
+
   if (isPending) {
     return <div className="mx-auto max-w-2xl px-4 py-12"><div className="skeleton h-64 w-full" /></div>;
   }
 
-  const user = session?.user as { name?: string; email?: string; studentId?: string; batch?: string; role?: string } | undefined;
+  const user = session?.user as {
+    name?: string; email?: string; studentId?: string;
+    batch?: string; role?: string; profileComplete?: boolean;
+  } | undefined;
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-12 sm:px-6 lg:px-8">
+
+      {!isPending && user && !user.profileComplete && (
+        <div className="mb-4 rounded-[12px] border border-[var(--color-warning)]/30 bg-[var(--color-warning)]/10 p-4">
+          {!editing ? (
+            <div className="flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center">
+              <p className="text-sm text-[var(--color-primary)]">
+                Complete your profile (Student ID + Batch) before applying for events or the election.
+              </p>
+              <button
+                onClick={() => setEditing(true)}
+                className="shrink-0 rounded-full bg-[var(--color-accent)] px-4 py-1.5 text-xs font-semibold text-[var(--color-primary)]"
+              >
+                Complete now
+              </button>
+            </div>
+          ) : (
+            <div className="grid gap-3 sm:grid-cols-3">
+              <input
+                value={studentId}
+                onChange={(e) => setStudentId(e.target.value)}
+                placeholder="Student ID"
+                className="rounded-lg border border-[var(--color-secondary)]/25 px-3 py-2 text-sm focus:border-[var(--color-secondary)] focus:outline-none"
+              />
+              <select
+                value={batch}
+                onChange={(e) => setBatch(e.target.value as Batch)}
+                className="rounded-lg border border-[var(--color-secondary)]/25 px-3 py-2 text-sm focus:border-[var(--color-secondary)] focus:outline-none"
+              >
+                {BATCHES.map((b) => (
+                  <option key={b} value={b}>{b}</option>
+                ))}
+              </select>
+              <button
+                onClick={() => void saveProfile()}
+                disabled={saving || studentId.trim().length < 3}
+                className="rounded-lg bg-[var(--color-accent)] px-4 py-2 text-sm font-semibold text-[var(--color-primary)] disabled:opacity-60"
+              >
+                {saving ? "Saving…" : "Save"}
+              </button>
+            </div>
+          )}
+        </div>
+      )}
+
       <div className="rounded-[12px] border border-[var(--color-secondary)]/15 bg-white p-6 shadow-sm">
         <div className="flex items-center gap-3">
           <UserCircle2 className="h-10 w-10 text-[var(--color-secondary)]" />
@@ -42,11 +109,11 @@ export default function ProfilePage() {
         <div className="mt-4 grid gap-3 text-sm sm:grid-cols-2">
           <div className="rounded-lg bg-[var(--color-secondary)]/5 p-3">
             <p className="text-xs text-[var(--color-neutral-text)]">Student ID</p>
-            <p className="font-medium text-[var(--color-primary)]">{user?.studentId ?? "—"}</p>
+            <p className="font-medium text-[var(--color-primary)]">{user?.studentId || "—"}</p>
           </div>
           <div className="rounded-lg bg-[var(--color-secondary)]/5 p-3">
             <p className="text-xs text-[var(--color-neutral-text)]">Batch</p>
-            <p className="font-medium text-[var(--color-primary)]">{user?.batch ?? "—"}</p>
+            <p className="font-medium text-[var(--color-primary)]">{user?.batch || "—"}</p>
           </div>
         </div>
       </div>
