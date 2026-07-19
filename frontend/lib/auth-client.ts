@@ -3,7 +3,7 @@ import { API_URL } from "@/lib/api";
 import { inferAdditionalFields } from "better-auth/client/plugins";
 
 export const authClient = createAuthClient({
-   baseURL: API_URL,
+  baseURL: "https://neucc.onrender.com", 
   fetchOptions: {
     credentials: "include",
   },
